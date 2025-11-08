@@ -1,0 +1,304 @@
+/* Ocean Theme Styles - Fallback without Tailwind directives */
+
+/* Ocean Theme Variables */
+:root {
+  --ocean-deep: #001F3F;
+  --ocean-blue: #0077B6;
+  --ocean-turquoise: #00B4D8;
+  --ocean-cyan: #90E0EF;
+  --ocean-light: #CAF0F8;
+  --surface-glass: rgba(144, 224, 239, 0.1);
+  --surface-glass-hover: rgba(144, 224, 239, 0.2);
+}
+
+/* Base Ocean Theme Styles */
+.ocean-theme {
+  background: linear-gradient(
+    180deg,
+    var(--ocean-light) 0%,
+    var(--ocean-cyan) 25%,
+    var(--ocean-turquoise) 50%,
+    var(--ocean-blue) 75%,
+    var(--ocean-deep) 100%
+  );
+  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ocean-theme.underwater {
+  background: linear-gradient(
+    180deg,
+    var(--ocean-blue) 0%,
+    var(--ocean-deep) 50%,
+    #000814 100%
+  );
+}
+
+/* Glassmorphism Components */
+.glass-surface {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(144, 224, 239, 0.2);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 31, 63, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-surface:hover {
+  background: var(--surface-glass-hover);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 16px 48px rgba(0, 31, 63, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Ocean Animations */
+@keyframes oceanWave {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(-1deg);
+  }
+}
+
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes causticShimmer {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(180deg);
+  }
+}
+
+@keyframes deepFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+  }
+}
+
+/* Underwater Particles */
+.ocean-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, var(--ocean-cyan), transparent);
+  border-radius: 50%;
+  animation: bubbleFloat 8s infinite linear;
+}
+
+.particle:nth-child(odd) {
+  animation-delay: -2s;
+  animation-duration: 6s;
+}
+
+.particle:nth-child(3n) {
+  animation-delay: -4s;
+  animation-duration: 10s;
+  background: radial-gradient(circle, var(--ocean-light), transparent);
+}
+
+/* Caustic Light Effects */
+.caustic-light {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(ellipse at 20% 50%, transparent 20%, var(--ocean-cyan) 21%, var(--ocean-cyan) 25%, transparent 26%),
+    radial-gradient(ellipse at 80% 30%, transparent 20%, var(--ocean-light) 21%, var(--ocean-light) 25%, transparent 26%);
+  opacity: 0.1;
+  animation: causticShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ocean Typography */
+.ocean-text {
+  color: var(--ocean-light);
+  text-shadow: 
+    0 0 10px var(--ocean-cyan),
+    0 0 20px var(--ocean-turquoise),
+    0 0 30px var(--ocean-blue);
+  transition: all 0.3s ease;
+}
+
+.ocean-text-deep {
+  color: var(--ocean-deep);
+  text-shadow: 
+    0 2px 4px rgba(0, 31, 63, 0.3),
+    0 4px 8px rgba(0, 31, 63, 0.2);
+}
+
+/* Ocean Navigation */
+.ocean-nav {
+  background: rgba(0, 31, 63, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(144, 224, 239, 0.3);
+}
+
+/* Ocean Buttons */
+.ocean-button {
+  background: linear-gradient(45deg, var(--ocean-turquoise), var(--ocean-cyan));
+  color: var(--ocean-deep);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 
+    0 4px 15px rgba(0, 119, 182, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ocean-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.ocean-button:hover::before {
+  left: 100%;
+}
+
+.ocean-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 119, 182, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Ocean Slider */
+.ocean-slider {
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--ocean-deep), var(--ocean-cyan));
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.ocean-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--ocean-light);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 119, 182, 0.5);
+  transition: all 0.3s ease;
+}
+
+.ocean-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.7);
+}
+
+.ocean-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--ocean-light);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 119, 182, 0.5);
+}
+
+/* Ocean Float Animation for 3D Elements */
+.ocean-float {
+  filter: drop-shadow(0 0 20px var(--ocean-cyan));
+}
+
+.geometric-shape.ocean-float {
+  background: linear-gradient(45deg, var(--ocean-turquoise), var(--ocean-cyan));
+  opacity: 0.8;
+}
+
+/* Diving Transition */
+.diving-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, var(--ocean-cyan) 0%, var(--ocean-blue) 50%, var(--ocean-deep) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 50;
+}
+
+.diving-transition.active {
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .glass-surface {
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+  }
+  
+  .ocean-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .caustic-light {
+    opacity: 0.05;
+  }
+}

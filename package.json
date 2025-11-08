@@ -1,0 +1,19 @@
+{
+  "name": "omprakash-portfolio",
+  "version": "1.0.0",
+  "description": "Real-time portfolio website with React frontend and Node.js backend",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "keywords": ["portfolio", "react", "nodejs", "socket.io", "real-time"],
+  "author": "Omprakash",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

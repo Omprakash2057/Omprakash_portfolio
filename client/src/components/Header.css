@@ -1,0 +1,120 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-surface);
+  backdrop-filter: blur(15px);
+  z-index: 1000;
+  transition: all 0.4s ease;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header.scrolled {
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+  padding: 0.5rem 0;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo h2 {
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.logo h2:hover {
+  color: var(--primary-color);
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.nav a:hover {
+  color: var(--primary-color);
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.menu-toggle:hover {
+  color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    backdrop-filter: blur(10px);
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    box-shadow: var(--shadow-md);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav.nav-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav ul {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1rem;
+  }
+
+  .nav a {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+    display: block;
+  }
+}

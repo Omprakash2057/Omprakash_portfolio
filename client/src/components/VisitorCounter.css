@@ -1,0 +1,137 @@
+.visitor-counter {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.counter-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.counter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.counter-icon {
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.counter-icon.online {
+  background: linear-gradient(45deg, #10b981, #34d399);
+}
+
+.counter-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.counter-number {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1f2937;
+}
+
+.counter-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.counter-divider {
+  width: 1px;
+  height: 30px;
+  background: #e5e7eb;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.connection-status.connected {
+  color: #10b981;
+}
+
+.connection-status.connected .status-dot {
+  background: #10b981;
+}
+
+.connection-status.disconnected {
+  color: #ef4444;
+}
+
+.connection-status.disconnected .status-dot {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.connection-status.disconnected .status-dot {
+  animation: none;
+}
+
+@media (max-width: 768px) {
+  .visitor-counter {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    min-width: auto;
+  }
+
+  .counter-content {
+    justify-content: space-between;
+  }
+
+  .counter-item {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .counter-divider {
+    flex-shrink: 0;
+  }
+}
