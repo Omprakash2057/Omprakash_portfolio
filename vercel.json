@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "name": "omprakash-portfolio",
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "client/build"
+      }
+    },
+    {
+      "src": "server/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/server.js"
+    },
+    {
+      "src": "/socket.io/(.*)",
+      "dest": "server/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/build/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
