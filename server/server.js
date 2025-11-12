@@ -12,31 +12,47 @@ const server = http.createServer(app);
 // Trust proxy for rate limiting
 app.set('trust proxy', 1);
 
+// Enable compression
+app.use(require('compression')());
+
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     methods: ["GET", "POST"]
-  }
+  },
+  pingTimeout: 60000,
+  pingInterval: 25000
 });
 
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false
+}));
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
-// Rate limiting
+// Rate limiting - more strict
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
 });
-app.use(limiter);
+app.use('/api/', limiter);
+
+// Stricter rate limit for contact form
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5, // limit each IP to 5 contact form submissions per hour
+  message: 'Too many contact form submissions, please try again later.'
+});
 
 // In-memory storage (in production, use a database)
 let visitorCount = 1247; // Starting count
 let onlineUsers = 0;
-let projects = [
+const projects = [
   {
     id: 1,
     views: 245,
@@ -69,14 +85,36 @@ let projects = [
   }
 ];
 
+// Helper function for input validation
+const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
+const sanitizeInput = (input) => {
+  if (typeof input !== 'string') return '';
+  return input.trim().slice(0, 500); // Limit length and trim whitespace
+};
+
 // Routes
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
 });
 
-app.post('/api/contact', async (req, res) => {
+app.post('/api/contact', contactLimiter, async (req, res) => {
   try {
-    const { name, email, subject, message } = req.body;
+    let { name, email, subject, message } = req.body;
+    
+    // Sanitize inputs
+    name = sanitizeInput(name);
+    email = sanitizeInput(email);
+    subject = sanitizeInput(subject);
+    message = sanitizeInput(message);
     
     // Validate input
     if (!name || !email || !subject || !message) {
@@ -86,26 +124,37 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // In a real application, you would:
-    // 1. Save to database
-    // 2. Send email notification
-    // 3. Validate email format
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid email format' 
+      });
+    }
+
+    // Check minimum lengths
+    if (name.length < 2 || subject.length < 3 || message.length < 10) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Input fields are too short' 
+      });
+    }
     
     console.log('Contact form submission:', {
       name,
       email,
       subject,
-      message,
+      messageLength: message.length,
       timestamp: new Date().toISOString()
     });
 
-    // Simulate email sending delay
-    setTimeout(() => {
-      res.json({ 
-        success: true, 
-        message: 'Message sent successfully' 
-      });
-    }, 1000);
+    // Simulate async processing
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    res.json({ 
+      success: true, 
+      message: 'Message sent successfully' 
+    });
 
   } catch (error) {
     console.error('Contact form error:', error);

@@ -1,10 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaCode } from 'react-icons/fa';
 import './Projects.css';
 
+const ProjectCard = memo(({ project, index }) => (
+  <motion.div 
+    className="project-card"
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    whileHover={{ y: -10 }}
+    viewport={{ once: true }}
+  >
+    <div className="project-image">
+      <div className="image-placeholder">
+        <FaCode />
+        <span>Project Image</span>
+      </div>
+      <div className="project-overlay">
+        <div className="project-actions">
+          {project.github && (
+            <a 
+              href={project.github} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="action-btn"
+            >
+              <FaGithub />
+            </a>
+          )}
+          {project.live && (
+            <a 
+              href={project.live} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="action-btn"
+            >
+              <FaExternalLinkAlt />
+            </a>
+          )}
+        </div>
+      </div>
+      <div className={`project-status ${project.status}`}>
+        {project.status === 'completed' ? 'Completed' : 'In Progress'}
+      </div>
+    </div>
+
+    <div className="project-content">
+      <h3>{project.title}</h3>
+      <p>{project.description}</p>
+      
+      <div className="project-technologies">
+        {project.technologies.map((tech, techIndex) => (
+          <span key={techIndex} className="tech-tag">
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+));
+
 const Projects = () => {
-  const [projects] = useState([
+  const projects = useMemo(() => [
     {
       id: 1,
       title: "Ensemble ANN Models for Air Pollution Prediction (ML Project)",
@@ -17,7 +75,7 @@ const Projects = () => {
       likes: 24,
       status: "completed"
     }
-  ]);
+  ], []);
 
   const [filter, setFilter] = useState('all');
   const [filteredProjects, setFilteredProjects] = useState(projects);
@@ -30,11 +88,11 @@ const Projects = () => {
     }
   }, [filter, projects]);
 
-  const filterOptions = [
+  const filterOptions = useMemo(() => [
     { value: 'all', label: 'All Projects' },
     { value: 'completed', label: 'Completed' },
     { value: 'in-progress', label: 'In Progress' }
-  ];
+  ], []);
 
   return (
     <section id="projects" className="projects section">
@@ -69,63 +127,7 @@ const Projects = () => {
 
         <div className="projects-grid">
           {filteredProjects.map((project, index) => (
-            <motion.div 
-              key={project.id}
-              className="project-card"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              viewport={{ once: true }}
-            >
-              <div className="project-image">
-                <div className="image-placeholder">
-                  <FaCode />
-                  <span>Project Image</span>
-                </div>
-                <div className="project-overlay">
-                  <div className="project-actions">
-                    {project.github && (
-                      <a 
-                        href={project.github} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="action-btn"
-                      >
-                        <FaGithub />
-                      </a>
-                    )}
-                    {project.live && (
-                      <a 
-                        href={project.live} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="action-btn"
-                      >
-                        <FaExternalLinkAlt />
-                      </a>
-                    )}
-                  </div>
-                </div>
-                <div className={`project-status ${project.status}`}>
-                  {project.status === 'completed' ? 'Completed' : 'In Progress'}
-                </div>
-              </div>
-
-              <div className="project-content">
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                
-                <div className="project-technologies">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span key={techIndex} className="tech-tag">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                {/* Project stats removed as requested */}
-              </div>
-            </motion.div>
+            <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
 
