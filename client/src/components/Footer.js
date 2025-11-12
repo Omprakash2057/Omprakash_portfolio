@@ -10,22 +10,19 @@ const Footer = () => {
       icon: <FaGithub />,
       url: "https://github.com/Omprakash2057",
       name: "GitHub",
-      followers: "150+",
       description: "Repositories"
     },
     {
       icon: <FaLinkedin />,
       url: "https://www.linkedin.com/in/mallepula-omprakash-goud/",
       name: "LinkedIn",
-      followers: "500+",
       description: "Connections"
     },
     {
       icon: <FaTwitter />,
       url: "mailto:mallepulaomprakashgoud@gmail.com",
       name: "Email",
-      followers: "Contact",
-      description: "Me"
+      description: "Contact Me"
     }
   ];
 
@@ -79,7 +76,6 @@ const Footer = () => {
                     {social.icon}
                   </div>
                   <h4 className="social-card-name">{social.name}</h4>
-                  <p className="social-card-followers">{social.followers}</p>
                   <div className="social-card-link">
                     <span className="social-card-description">{social.description}</span>
                   </div>

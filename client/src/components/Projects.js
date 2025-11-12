@@ -30,13 +30,6 @@ const Projects = () => {
     }
   }, [filter, projects]);
 
-  const handleProjectView = (projectId) => {
-    // Project view tracking for static deployment
-    console.log('Project viewed:', projectId);
-  };
-
-  // handleProjectLike function removed as requested
-
   const filterOptions = [
     { value: 'all', label: 'All Projects' },
     { value: 'completed', label: 'Completed' },
@@ -98,7 +91,6 @@ const Projects = () => {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="action-btn"
-                        onClick={() => handleProjectView(project.id)}
                       >
                         <FaGithub />
                       </a>
@@ -109,7 +101,6 @@ const Projects = () => {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="action-btn"
-                        onClick={() => handleProjectView(project.id)}
                       >
                         <FaExternalLinkAlt />
                       </a>

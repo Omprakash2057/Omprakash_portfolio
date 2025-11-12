@@ -124,7 +124,7 @@ const Hero = () => {
               transition={{ delay: 1, duration: 0.8 }}
             >
               <a 
-                href="/Omprakash_resume.pdf" 
+                href={`${process.env.PUBLIC_URL}/Omprakash_resume.pdf`}
                 download="Omprakash_Resume.pdf"
                 className="btn primary"
                 style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
@@ -160,7 +160,7 @@ const Hero = () => {
             <div className="image-container">
               <div className="profile-image">
                 <img 
-                  src="/omprakash-photo.jpg" 
+                  src={`${process.env.PUBLIC_URL}/omprakash-photo.jpg`}
                   alt="Omprakash Mallepula - Software Engineer" 
                   className="hero-profile-photo"
                 />

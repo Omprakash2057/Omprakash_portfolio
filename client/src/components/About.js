@@ -52,7 +52,7 @@ const About = () => {
           >
             <div className="image-wrapper">
               <img 
-                src="/omprakash-photo.jpg" 
+                src={`${process.env.PUBLIC_URL}/omprakash-photo.jpg`}
                 alt="Omprakash Mallepula - Software Engineer" 
                 className="profile-photo"
               />
